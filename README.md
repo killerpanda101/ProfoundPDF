@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ### Step 4: Launch the Application 🌟
 
-With your API key set and dependencies installed, you're ready to start the application. Navigate to the root folder of the directory and run:
+With your API key set & dependencies installed, you're ready to start the application. Navigate to the root folder of the directory and run:
 
 ```bash
 streamlit run app.py
