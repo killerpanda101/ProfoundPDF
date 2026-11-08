@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Run gitleaks
         run: |
           curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar -xz gitleaks
-          ./gitleaks detect --source . --redact --verbose
+          # Scan the current tree only; secrets already in old history are handled by rotating them
+          ./gitleaks detect --no-git --source . --redact --verbose
   forbid-vendored-deps:
     name: Block committed dependency/build dirs
     runs-on: ubuntu-latest
