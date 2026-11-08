@@ -1,0 +1,25 @@
+.env
+__pycache__/
+# Secrets / local config
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets.*
+credentials.json
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+# Python
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+models/*.pt
+*.ckpt

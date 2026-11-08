@@ -1,0 +1,30 @@
+name: Security checks
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run gitleaks
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar -xz gitleaks
+          # Scan the current tree only; secrets already in old history are handled by rotating them
+          ./gitleaks detect --no-git --source . --redact --verbose
+  forbid-vendored-deps:
+    name: Block committed dependency/build dirs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          if git ls-files | grep -E '(^|/)(node_modules|__pycache__|\.venv|venv)/' | head -1 | grep -q .; then
+            echo "Dependency/cache directories must not be committed:"; git ls-files | grep -E '(^|/)(node_modules|__pycache__|\.venv|venv)/' | head; exit 1
+          fi

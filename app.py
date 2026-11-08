@@ -10,13 +10,14 @@ from langchain.chains import ConversationalRetrievalChain
 from html_template import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
 import os
+import html
 
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
         pdf_reader = PdfReader(pdf)
         for page in pdf_reader.pages:
-            text += page.extract_text()
+            text += page.extract_text() or ""
     return text
 
 
@@ -63,14 +64,18 @@ def handle_userinput(user_question):
     for i, message in reversed(list(enumerate(st.session_state.chat_history))):
         if i % 2 == 0:
             st.write(user_template.replace(
-                "{{MSG}}", message.content), unsafe_allow_html=True)
+                "{{MSG}}", html.escape(message.content)), unsafe_allow_html=True)
         else:
             st.write(bot_template.replace(
-                "{{MSG}}", message.content), unsafe_allow_html=True)
+                "{{MSG}}", html.escape(message.content)), unsafe_allow_html=True)
 
 
 def main():
-    os.environ["OPENAI_API_KEY"] = "sk-r7QTNcbEexxxxxxxxxxxxxxxxxxxxxxxxx"
+    # Read OPENAI_API_KEY from the environment or a local .env file
+    load_dotenv()
+    if not os.environ.get("OPENAI_API_KEY"):
+        st.error("OPENAI_API_KEY is not set. Add it to your environment or a .env file.")
+        st.stop()
     st.set_page_config(page_title="Chat with multiple PDFs",
                        page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
