@@ -14,13 +14,13 @@ To interact with the OpenAI model, you will need an API key. Follow these steps 
 
 ### Step 2: Set Your API Key 🛠️
 
-Once you have your API key, you'll need to configure the application to use it. In the `app.py` file, find the line that looks like this:
+Once you have your API key, create a file named `.env` in the project root (it is git-ignored) containing:
 
-```python
-os.environ["OPENAI_API_KEY"] = "sk-r7QTNcbEeRBAub8quuJAT3BlbkFJQNnPTgSaUVvGhxxxx"
+```
+OPENAI_API_KEY=your-key-here
 ```
 
-Replace the placeholder key with your actual API key.
+Alternatively, export `OPENAI_API_KEY` in your shell. Never commit your key to source control.
 
 ### Step 3: Install Dependencies 📦
 
